@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import Grid from "./Grid.tsx"
 import "./App.css"
+import "./index.css"
 import Keyboard from "./Keyboard.tsx"
 
 
