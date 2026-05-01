@@ -152,7 +152,7 @@ function App() {
     window.addEventListener("keydown", handleKeyPress)
     // cleanup
     return () => window.removeEventListener("keydown", handleKeyPress)
-  }, [grid, currentRow, currentCol, gameStatus])
+  }, [grid, currentRow, currentCol, gameStatus, gameId])
 
   const getGameStatus = function (box_colors: string[], row_index: number): GameStatus {
     // check if user has won
