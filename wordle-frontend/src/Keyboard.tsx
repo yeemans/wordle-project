@@ -21,7 +21,7 @@ export default function Keyboard({ onKeyPress }: KeyboardProps) {
               }`}
               onClick={() => onKeyPress(key)}
             >
-              {key === "backspace" ? "⌫" : key}
+              {key === "backspace" ? "back" : key}
             </button>
           ))}
         </div>
