@@ -4,7 +4,7 @@ import "./App.css"
 
 
 function App() {
-  type GameStatus = "won" | "lost" | "continuing";
+  type GameStatus = "won" | "lost" | "continuing"
   type BoxColorsResponse = {
     valid: Boolean
     box_colors: ("green" | "gray" | "yellow")[]
@@ -20,7 +20,7 @@ function App() {
   const [currentRow, setCurrentRow] = useState(0)
   const [currentCol, setCurrentCol] = useState(0)
 
-  const [gameStatus, setGameStatus] = useState<GameStatus>("continuing");
+  const [gameStatus, setGameStatus] = useState<GameStatus>("continuing")
 
   const [grid, setGrid] = useState<Cell[][]>(
     Array.from({ length: ROWS }, () =>
@@ -40,6 +40,7 @@ function App() {
     return res.json()
   }
 
+  // this useEffect tells the user when they have won and lost
   useEffect(() => {
     const handleGameStatus = async () => {
       const answerResponse = await fetch("http://127.0.0.1:5000/get-answer", {
@@ -51,13 +52,17 @@ function App() {
 
       if (gameStatus === "won") alert("Hooray! You won!")
       if (gameStatus === "lost") {
-        const answerJson = await answerResponse.json();
-        alert(`Try again next time. The word was${answerJson.answer}`)
+        const answerJson = await answerResponse.json()
+        alert(`Try again next time. The word was ${answerJson.answer}`)
       }
     }
 
-    handleGameStatus();
+    handleGameStatus()
+  }, [gameStatus])
 
+  useEffect(() => {
+    if (gameStatus === "won") return
+     
     const handleKey = async (e: KeyboardEvent) => {
       const key = e.key.toLowerCase()
 
