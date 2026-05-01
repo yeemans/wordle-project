@@ -10,6 +10,7 @@ function App() {
   const [currentCol, setCurrentCol] = useState(0);
 
   type BoxColorsResponse = {
+    valid: Boolean;
     box_colors: ("green" | "gray" | "yellow")[];
   };
 
@@ -56,13 +57,15 @@ function App() {
       // submit guess
       if (key === "enter") {
         if (currentCol < COLS) return;
-
         const guess = grid[currentRow].map(c => c.letter).join("");
 
         try {
-
           const data = await getBoxColors(guess);
-          console.log(data);
+          
+          if (data.valid === false) {
+            alert("Invalid word")
+            return;
+          }
           const newGrid = grid.map(r => [...r]);
 
           newGrid[currentRow] = newGrid[currentRow].map((cell, i) => ({
