@@ -28,6 +28,21 @@ function App() {
       Array.from({ length: COLS }, () => ({ letter: "", status: "" }))
     )
   )
+  const [gameId, setGameId] = useState<string | null>(null);
+
+  // get gameId when game starts
+  useEffect(() => {
+    const startGame = async () => {
+      const res = await fetch("http://127.0.0.1:5000/new-game", {
+        method: "POST",
+      });
+
+      const data = await res.json();
+      setGameId(data.game_id);
+    };
+
+    startGame();
+  }, []);
 
   const getBoxColors = async (word: string): Promise<BoxColorsResponse> => {
     const res = await fetch("http://127.0.0.1:5000/get-box-colors", {
@@ -35,7 +50,7 @@ function App() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ word }),
+      body: JSON.stringify({ "word": word, "game_id": gameId }),
     })
 
     return res.json()
@@ -124,7 +139,7 @@ function App() {
       if (gameStatus === "won") alert("Hooray! You won!")
       if (gameStatus === "lost") {
         const answerJson = await answerResponse.json()
-        alert(`Try again next time. The word was ${answerJson.answer}`)
+        alert(`Try again next time. Today's word was ${answerJson.answer}`)
       }
     }
 
