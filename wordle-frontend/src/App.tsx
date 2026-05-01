@@ -1,19 +1,25 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "./assets/vite.svg";
-import heroImg from "./assets/hero.png";
+import Grid from "./Grid.tsx";
 import "./App.css";
 
 
 function App() {
+  const ROWS = 6;
+  const COLS = 5;
   type BoxColorsResponse = {
   colors: ("green" | "gray" | "yellow")[];
   };
 
   type Cell = {
     letter: string;
-    color: "green" | "gray" | "yellow";
+    status: "green" | "gray" | "yellow" | "";
   };
+
+  const [grid, setGrid] = useState<Cell[][]>(
+    Array.from({ length: ROWS }, () =>
+      Array.from({ length: COLS }, () => ({ letter: "", status: "" }))
+    )
+  );
 
   const getBoxColors = async (word: string): Promise<BoxColorsResponse> => {
     const res = await fetch("http://127.0.0.1:5000/get-box-colors", {
@@ -29,7 +35,8 @@ function App() {
 
   return (
     <>
-      
+      <h1>Wordle</h1>
+      <Grid grid={grid} />
     </>
   );
 }
