@@ -6,7 +6,7 @@ from flask_cors import CORS
 import datetime
 
 app = Flask(__name__)
-CORS(app, origins=["https://wordle-project-frontend.vercel.app/", "http://localhost:5000]"])
+CORS(app, origins=["https://wordle-project-frontend.vercel.app/", "http://localhost:5173"])
 answer = ""
 games = {}
 allowed_guesses = set()
