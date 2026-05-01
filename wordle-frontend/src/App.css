@@ -58,7 +58,7 @@ h1 {
 }
 
 .keyboard-row {
-  display: flex;
+  display: flex; 
   gap: 6px;
 }
 
