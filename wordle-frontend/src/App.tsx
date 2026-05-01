@@ -163,11 +163,11 @@ function App() {
   }
 
   return (
-    <>
+    <div className="container">
       {gameId && <h1>Wordle</h1> || <h1>Loading Wordle...</h1>}
       <Grid grid={grid} />
       <Keyboard onKeyPress={handleKey} />
-    </>
+    </div>
   )
 }
 
