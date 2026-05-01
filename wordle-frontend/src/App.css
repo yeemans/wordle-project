@@ -39,3 +39,36 @@
   background: gray;
   border: none;
 }
+
+.keyboard {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.keyboard-row {
+  display: flex;
+  gap: 6px;
+}
+
+.key {
+  padding: 12px;
+  min-width: 35px;
+  border-radius: 4px;
+  background: #818384;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.key:hover {
+  background: #a4a6a8;
+}
+
+.key.wide {
+  min-width: 60px;
+}
