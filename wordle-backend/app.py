@@ -40,8 +40,5 @@ def get_box_colors():
 
 
 
-
-
-
 if __name__ == "__main__":
     app.run(debug=True)
