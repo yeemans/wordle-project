@@ -1,7 +1,16 @@
+body {
+  background: #002147;
+}
+
+h1 {
+  color: white;
+}
+
 .grid {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  border: none;
 }
 
 .row {
@@ -20,13 +29,13 @@
   font-size: 24px;
   font-weight: bold;
   text-transform: uppercase;
-  background: white;
+  background: #364153;
   color: white;
 }
 
 /* colors */
 .cell.green {
-  background: forestgreen;
+  background: #4baa9d;
   border: none;
 }
 
@@ -36,7 +45,7 @@
 }
 
 .cell.gray {
-  background: #aaa;
+  background: #364153;
   border: none;
 }
 
@@ -56,7 +65,7 @@
 .key {
   padding: 20px;
   border-radius: 4px;
-  background: #818384;
+  background: #4a5567;
   color: white;
   border: none;
   font-weight: bold;
