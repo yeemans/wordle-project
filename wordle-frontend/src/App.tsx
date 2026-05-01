@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
 import Grid from "./Grid.tsx"
 import "./App.css"
+import Keyboard from "./Keyboard.tsx"
 
 
 function App() {
@@ -39,6 +40,76 @@ function App() {
 
     return res.json()
   }
+  const handleKey = async (key: string) => {
+    if (gameStatus !== "continuing") return;
+
+    // BACKSPACE
+    if (key === "backspace") {
+      if (currentCol === 0) return;
+
+      const newGrid = grid.map(r => [...r]);
+      newGrid[currentRow][currentCol - 1] = { letter: "", status: "" };
+
+      setGrid(newGrid);
+      setCurrentCol(c => c - 1);
+      return;
+    }
+
+    // ENTER
+    if (key === "enter") {
+      if (currentCol < COLS) return;
+
+      const guess = grid[currentRow].map(c => c.letter).join("");
+
+      try {
+        const data = await getBoxColors(guess);
+
+        if (!data.valid) {
+          alert("Invalid word");
+          return;
+        }
+
+        const newGrid = grid.map(r => [...r]);
+
+        newGrid[currentRow] = newGrid[currentRow].map((cell, i) => ({
+          ...cell,
+          status: data.box_colors[i],
+        }));
+
+        setGrid(newGrid);
+
+        const newStatus = getGameStatus(data.box_colors, currentRow + 1);
+        setGameStatus(newStatus);
+
+        setCurrentRow(r => r + 1);
+        setCurrentCol(0);
+      } catch (error) {
+        console.error("API error:", error);
+      }
+
+      return;
+    }
+
+    // LETTERS
+    if (key.length === 1 && key >= "a" && key <= "z") {
+      if (currentCol >= COLS) return;
+
+      const newGrid = grid.map(r => [...r]);
+      newGrid[currentRow][currentCol] = {
+        letter: key,
+        status: "",
+      };
+
+      setGrid(newGrid);
+      setCurrentCol(c => c + 1);
+    }
+  }
+
+  // this extracts the input from a keypress, like "a" or "enter"
+  const handleKeyPress = async (e: KeyboardEvent) => { 
+    const key = e.key.toLowerCase()
+    handleKey(key)
+  }
 
   // this useEffect tells the user when they have won and lost
   useEffect(() => {
@@ -62,71 +133,9 @@ function App() {
 
   useEffect(() => {
     if (gameStatus === "won") return
-     
-    const handleKey = async (e: KeyboardEvent) => {
-      const key = e.key.toLowerCase()
-
-      // backspace
-      if (key === "backspace") {
-        if (currentCol === 0) return
-
-        // copy grid, modify copied grid, then setGrid
-        const newGrid = grid.map(r => [...r])
-        newGrid[currentRow][currentCol - 1] = { letter: "", status: "" }
-
-        setGrid(newGrid)
-        setCurrentCol(c => c - 1)
-        return
-      }
-
-      // submit guess
-      if (key === "enter") {
-        if (currentCol < COLS) return
-        const guess = grid[currentRow].map(c => c.letter).join("")
-
-        try {
-          const data = await getBoxColors(guess)
-          
-          if (data.valid === false) {
-            alert("Invalid word")
-            return
-          }
-          const newGrid = grid.map(r => [...r])
-
-          newGrid[currentRow] = newGrid[currentRow].map((cell, i) => ({
-            ...cell,
-            status: data.box_colors[i],
-          }))
-
-          setGameStatus(getGameStatus(data.box_colors, currentRow + 1))
-          setGrid(newGrid)
-          setCurrentRow(r => r + 1) // move to next row
-          setCurrentCol(0)
-
-        } catch (error) {
-          console.error("API error:", error)
-        }
-        return
-      }
-
-      // typing letters
-      if (key.length === 1 && key >= "a" && key <= "z") {
-        if (currentCol >= COLS) return
-
-        const newGrid = grid.map(r => [...r])
-        newGrid[currentRow][currentCol] = {
-          letter: key,
-          status: "",
-        }
-
-        setGrid(newGrid)
-        setCurrentCol(c => c + 1)
-      }
-    }
-
-    window.addEventListener("keydown", handleKey)
+    window.addEventListener("keydown", handleKeyPress)
     // cleanup
-    return () => window.removeEventListener("keydown", handleKey)
+    return () => window.removeEventListener("keydown", handleKeyPress)
   }, [grid, currentRow, currentCol, gameStatus])
 
   const getGameStatus = function (box_colors: string[], row_index: number): GameStatus {
@@ -141,6 +150,7 @@ function App() {
     <>
       <h1>Wordle</h1>
       <Grid grid={grid} />
+      <Keyboard onKeyPress={handleKey} />
     </>
   )
 }
