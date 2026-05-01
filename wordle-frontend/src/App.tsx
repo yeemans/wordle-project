@@ -147,6 +147,7 @@ function App() {
   }, [gameStatus])
 
   useEffect(() => {
+    if (gameId == null) return
     if (gameStatus === "won") return
     window.addEventListener("keydown", handleKeyPress)
     // cleanup
@@ -163,7 +164,7 @@ function App() {
 
   return (
     <>
-      <h1>Wordle</h1>
+      {gameId && <h1>Wordle</h1> || <h1>Loading Wordle...</h1>}
       <Grid grid={grid} />
       <Keyboard onKeyPress={handleKey} />
     </>
