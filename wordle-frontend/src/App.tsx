@@ -33,7 +33,7 @@ function App() {
   // get gameId when game starts
   useEffect(() => {
     const startGame = async () => {
-      const res = await fetch("http://127.0.0.1:5000/new-game", {
+      const res = await fetch("https://wordle-project-jp7x.onrender.com/new-game", {
         method: "POST",
       });
 
@@ -45,7 +45,7 @@ function App() {
   }, []);
 
   const getBoxColors = async (word: string): Promise<BoxColorsResponse> => {
-    const res = await fetch("http://127.0.0.1:5000/get-box-colors", {
+    const res = await fetch("https://wordle-project-jp7x.onrender.com/get-box-colors", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -129,7 +129,7 @@ function App() {
   // this useEffect tells the user when they have won and lost
   useEffect(() => {
     const handleGameStatus = async () => {
-      const answerResponse = await fetch("http://127.0.0.1:5000/get-answer", {
+      const answerResponse = await fetch("https://wordle-project-jp7x.onrender.com/get-answer", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
